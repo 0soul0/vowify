@@ -10,5 +10,8 @@
   "devDependencies": {
     "turbo": "^2.5.0"
   },
-  "packageManager": "pnpm@10.11.0"
+  "packageManager": "pnpm@10.11.0",
+  "dependencies": {
+    "lucide-react": "^1.53.0"
+  }
 }

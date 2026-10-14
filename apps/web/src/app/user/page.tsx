@@ -1,7 +1,10 @@
 import { UserPageModule } from "@repo/feature-user";
+import { AuthGuard } from "@/shared/components/AuthGuard";
 
 export default function User() {
-    return (
-        <UserPageModule />
-    );
+  return (
+    <AuthGuard>
+      <UserPageModule />
+    </AuthGuard>
+  );
 }
