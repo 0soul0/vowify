@@ -23,6 +23,7 @@ import {
   AttendanceStatus,
   WeddingProject
 } from '@/features/dashboard/types';
+import { ROUTES } from '@/constants/routes';
 import Link from 'next/link';
 import { ArrowLeft, FolderHeart } from 'lucide-react';
 import { useI18n } from '@/shared/i18n/I18nContext';
@@ -81,7 +82,7 @@ export default function ProjectDashboardPage() {
           {t('projectNotFoundDesc')}
         </p>
         <Link
-          href="/projects"
+          href={ROUTES.PROJECTS}
           className="px-6 py-2.5 rounded-full bg-[#2D3B36] text-[#FAF9F5] text-xs font-medium flex items-center gap-2"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
@@ -93,7 +94,9 @@ export default function ProjectDashboardPage() {
 
   // 1. 複製喜帖專屬連結
   const handleCopyLink = async () => {
-    const publicUrl = `https://vowify.io/i/${currentProject.slug}`;
+    const publicUrl = typeof window !== 'undefined'
+      ? `${window.location.origin}${ROUTES.INVITATION(currentProject.slug)}`
+      : `https://vowify.io${ROUTES.INVITATION(currentProject.slug)}`;
     const success = await copyToClipboard(publicUrl);
     if (success) {
       setIsCopied(true);
@@ -167,7 +170,7 @@ export default function ProjectDashboardPage() {
         config={currentProject.invitationConfig}
         daysRemaining={daysRemaining}
         onPreviewClick={handlePreview}
-        onBackToHub={() => router.push('/projects')}
+        onBackToHub={() => router.push(ROUTES.PROJECTS)}
         isOpenOnMobile={isMobileSidebarOpen}
         onCloseMobile={() => setIsMobileSidebarOpen(false)}
       />
@@ -180,9 +183,9 @@ export default function ProjectDashboardPage() {
           daysRemaining={daysRemaining}
           projects={projects}
           currentProjectId={currentProject.id}
-          onSelectProject={(id) => router.push(`/dashboard/${id}`)}
+          onSelectProject={(id) => router.push(ROUTES.DASHBOARD_DETAIL(id))}
           onOpenCreateModal={() => setIsCreateModalOpen(true)}
-          onBackToHub={() => router.push('/projects')}
+          onBackToHub={() => router.push(ROUTES.PROJECTS)}
           onCopyLink={handleCopyLink}
           onPreview={handlePreview}
           onExport={handleExportCsv}
@@ -243,7 +246,7 @@ export default function ProjectDashboardPage() {
         onCreate={(newP) => {
           createProject(newP);
           setIsCreateModalOpen(false);
-          router.push(`/dashboard/${newP.id}`);
+          router.push(ROUTES.DASHBOARD_DETAIL(newP.id));
         }}
       />
 

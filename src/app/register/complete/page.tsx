@@ -6,6 +6,7 @@ import { Sparkles, User as UserIcon, ArrowRight, CheckCircle2, Loader2 } from 'l
 import Link from 'next/link';
 import { supabase } from '@/lib/supabase';
 import { useAuth } from '@/shared/context/AuthContext';
+import { ROUTES } from '@/constants/routes';
 
 function CompleteContent() {
   const router = useRouter();
@@ -19,12 +20,12 @@ function CompleteContent() {
     // 確認已有 session，否則退回 register
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!session) {
-        router.replace('/register');
+        router.replace(ROUTES.REGISTER);
       } else {
         // 如果已有名字（重複訪問），直接跳轉
         const existingName = session.user.user_metadata?.name as string | undefined;
         if (existingName) {
-          router.replace('/projects');
+          router.replace(ROUTES.PROJECTS);
         }
       }
       setIsCheckingSession(false);
@@ -47,7 +48,7 @@ function CompleteContent() {
       return;
     }
 
-    router.replace('/projects');
+    router.replace(ROUTES.PROJECTS);
   };
 
   if (isCheckingSession) {
@@ -61,7 +62,7 @@ function CompleteContent() {
   return (
     <div className="min-h-screen bg-[#F9F8F6] text-[#2D3B36] flex flex-col justify-between">
       <header className="px-6 py-5 max-w-7xl w-full mx-auto flex items-center justify-between">
-        <Link href="/" className="inline-flex items-center gap-2 text-xs font-medium text-[#6A665E] hover:text-[#2D3B36] transition-colors group">
+        <Link href={ROUTES.HOME} className="inline-flex items-center gap-2 text-xs font-medium text-[#6A665E] hover:text-[#2D3B36] transition-colors group">
           <Sparkles className="w-3.5 h-3.5 text-[#C5A880]" />
           <span className="font-serif font-bold tracking-wider">VOWIFY</span>
         </Link>

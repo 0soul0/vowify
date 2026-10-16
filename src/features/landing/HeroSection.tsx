@@ -15,6 +15,7 @@ import {
   ShieldCheck
 } from 'lucide-react';
 import { useI18n } from '../../shared/i18n/I18nContext';
+import { ROUTES } from '@/constants/routes';
 
 export function HeroSection() {
   const { t } = useI18n();
@@ -64,7 +65,7 @@ export function HeroSection() {
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
               <Link
-                href="/projects"
+                href={ROUTES.PROJECTS}
                 className="w-full sm:w-auto px-8 py-4 rounded-full bg-[#2D3B36] hover:bg-[#1E2824] text-[#FAF9F5] text-sm font-medium tracking-wide shadow-md transition-all hover:scale-102 flex items-center justify-center gap-2 group"
               >
                 <span>{t('freeCreate')}</span>

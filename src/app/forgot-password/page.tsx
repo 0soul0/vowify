@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '@/shared/context/AuthContext';
 import { useI18n, LanguageSwitcher } from '@/shared/i18n/I18nContext';
+import { ROUTES } from '@/constants/routes';
 
 export default function ForgotPasswordPage() {
   const { forgotPassword } = useAuth();
@@ -36,7 +37,7 @@ export default function ForgotPasswordPage() {
       {/* Top Navbar */}
       <header className="px-6 py-5 max-w-7xl w-full mx-auto flex items-center justify-between">
         <Link
-          href="/login"
+          href={ROUTES.LOGIN}
           className="inline-flex items-center gap-2 text-xs font-medium text-[#6A665E] hover:text-[#2D3B36] transition-colors group"
         >
           <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-0.5" />
@@ -81,7 +82,7 @@ export default function ForgotPasswordPage() {
               </p>
               <div className="pt-2">
                 <Link
-                  href="/login"
+                  href={ROUTES.LOGIN}
                   className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-[#2D3B36] hover:bg-[#1E2824] text-[#FAF9F5] text-xs font-semibold shadow-xs transition-colors"
                 >
                   <span>{t('backToLogin')}</span>
@@ -124,7 +125,7 @@ export default function ForgotPasswordPage() {
           {!isSent && (
             <div className="text-center pt-2 text-xs">
               <Link
-                href="/login"
+                href={ROUTES.LOGIN}
                 className="font-medium text-[#6A665E] hover:text-[#2D3B36] transition-colors"
               >
                 {t('backToLogin')}

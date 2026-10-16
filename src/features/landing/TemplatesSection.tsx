@@ -10,6 +10,7 @@ import {
   X
 } from 'lucide-react';
 import { useI18n } from '@/shared/i18n/I18nContext';
+import { ROUTES } from '@/constants/routes';
 
 interface TemplateItem {
   id: string;
@@ -325,7 +326,7 @@ export function TemplatesSection() {
                     <span>{t('previewDemo')}</span>
                   </button>
                   <Link
-                    href="/projects"
+                    href={ROUTES.PROJECTS}
                     className="flex-1 py-2 rounded-xl bg-[#2D3B36] hover:bg-[#1E2824] text-[#FAF9F5] text-[11px] font-medium flex items-center justify-center gap-1 transition-colors"
                   >
                     <span>{t('useTemplate')}</span>
@@ -364,7 +365,7 @@ export function TemplatesSection() {
                 {demoModalTemplate.subtitle}
               </p>
               <Link
-                href="/invite"
+                href={ROUTES.INVITE_DEMO}
                 target="_blank"
                 className="w-full py-2.5 rounded-xl bg-[#2D3B36] text-white text-xs font-medium flex items-center justify-center gap-1.5 shadow-xs"
               >

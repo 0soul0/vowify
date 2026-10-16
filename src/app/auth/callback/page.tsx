@@ -3,6 +3,7 @@
 import React, { useEffect, useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
+import { ROUTES } from '@/constants/routes';
 import { Loader2, AlertCircle } from 'lucide-react';
 
 function CallbackContent() {
@@ -15,7 +16,7 @@ function CallbackContent() {
 
     async function handleAuth() {
       const code = searchParams.get('code');
-      const next = searchParams.get('next') ?? '/register/complete';
+      const next = searchParams.get('next') ?? ROUTES.REGISTER_COMPLETE;
 
       try {
         if (code) {
@@ -42,7 +43,7 @@ function CallbackContent() {
         }
 
         // 若無 code 也無 session，導向登入頁
-        router.replace('/login');
+        router.replace(ROUTES.LOGIN);
       } catch (err) {
         if (mounted) setErrorMsg((err as Error).message);
       }
@@ -63,7 +64,7 @@ function CallbackContent() {
           <h2 className="font-serif text-lg font-bold text-[#2D3B36]">驗證失敗</h2>
           <p className="text-xs text-[#8E8A83] leading-relaxed">{errorMsg}</p>
           <button
-            onClick={() => router.push('/login')}
+            onClick={() => router.push(ROUTES.LOGIN)}
             className="w-full py-3 rounded-2xl bg-[#2D3B36] text-[#FAF9F5] text-xs font-semibold"
           >
             返回登入頁

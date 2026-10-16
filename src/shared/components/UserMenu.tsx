@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { LogOut, User as UserIcon, ChevronDown } from 'lucide-react';
 import { useAuth } from '@/shared/context/AuthContext';
 import { useI18n } from '@/shared/i18n/I18nContext';
+import { ROUTES } from '@/constants/routes';
 import { LogoutModal } from './LogoutModal';
 
 export function UserMenu() {
@@ -70,7 +71,7 @@ export function UserMenu() {
             {/* Menu items */}
             <div className="p-1.5 space-y-0.5">
               <Link
-                href="/user"
+                href={ROUTES.USER}
                 onClick={() => setOpen(false)}
                 className="flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-medium text-[#2D3B36] hover:bg-[#F2EFE9] transition-colors w-full"
               >

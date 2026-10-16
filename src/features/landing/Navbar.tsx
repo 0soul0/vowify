@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { LanguageSwitcher, useI18n } from '@/shared/i18n/I18nContext';
 import { useAuth } from '@/shared/context/AuthContext';
+import { ROUTES } from '@/constants/routes';
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -20,7 +21,7 @@ export function Navbar() {
     <header className="sticky top-0 z-50 bg-[#F9F8F6]/85 backdrop-blur-md border-b border-[#E8E5DF] transition-all">
       <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
         {/* Brand Logo */}
-        <Link href="/" className="flex items-center gap-2.5 group">
+        <Link href={ROUTES.HOME} className="flex items-center gap-2.5 group">
           <div className="w-10 h-10 rounded-xl bg-[#2D3B36] flex items-center justify-center text-[#FAF9F5] shadow-xs group-hover:scale-105 transition-transform">
             <Sparkles className="w-5 h-5 text-[#C5A880]" />
           </div>
@@ -52,20 +53,13 @@ export function Navbar() {
 
         {/* Desktop Right CTA */}
         <div className="hidden md:flex items-center gap-3">
-          <LanguageSwitcher />
           <Link
-            href={isAuthenticated ? "/projects" : "/login"}
-            className="text-xs font-medium text-[#6A665E] hover:text-[#2D3B36] transition-colors px-2 py-2"
-          >
-            {t('loginHub')}
-          </Link>
-          <Link
-            href={isAuthenticated ? "/projects" : "/register"}
-            className="px-5 py-2.5 rounded-full bg-[#2D3B36] hover:bg-[#1E2824] text-[#FAF9F5] text-xs font-medium tracking-wide shadow-xs transition-all hover:scale-102 flex items-center gap-1.5"
-          >
+            href={isAuthenticated ? ROUTES.PROJECTS : ROUTES.LOGIN}
+            className="px-5 py-2.5 rounded-full bg-[#2D3B36] hover:bg-[#1E2824] text-[#FAF9F5] text-xs font-medium tracking-wide shadow-xs transition-all hover:scale-102 flex items-center gap-1.5">
             <span>{t('freeCreate')}</span>
             <ArrowRight className="w-3.5 h-3.5 text-[#C5A880]" />
           </Link>
+          <LanguageSwitcher />
         </div>
 
         {/* Mobile Hamburger Button */}
@@ -116,13 +110,7 @@ export function Navbar() {
 
           <div className="pt-4 border-t border-[#E8E5DF] flex flex-col gap-3">
             <Link
-              href={isAuthenticated ? "/projects" : "/login"}
-              className="w-full text-center py-2.5 text-xs font-medium text-[#2D3B36] border border-[#E8E5DF] rounded-xl bg-white"
-            >
-              {t('loginHub')}
-            </Link>
-            <Link
-              href={isAuthenticated ? "/projects" : "/register"}
+              href={isAuthenticated ? ROUTES.PROJECTS : ROUTES.LOGIN}
               className="w-full text-center py-2.5 text-xs font-medium bg-[#2D3B36] text-[#FAF9F5] rounded-xl"
             >
               {t('freeCreate')}

@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
+import { ROUTES } from '@/constants/routes';
 import type { Session } from '@supabase/supabase-js';
 
 export interface User {
@@ -250,7 +251,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } catch {
       // ignore
     }
-    router.push('/login');
+    router.push(ROUTES.LOGIN);
   };
 
   return (

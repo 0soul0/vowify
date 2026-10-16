@@ -4,6 +4,7 @@ import React, { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useAuth } from '@/shared/context/AuthContext';
 import { useI18n } from '@/shared/i18n/I18nContext';
+import { ROUTES } from '@/constants/routes';
 import { Sparkles } from 'lucide-react';
 
 interface AuthGuardProps {
@@ -18,7 +19,7 @@ export function AuthGuard({ children }: AuthGuardProps) {
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
-      const redirectUrl = pathname ? `/login?redirect=${encodeURIComponent(pathname)}` : '/login';
+      const redirectUrl = ROUTES.buildLoginUrl(pathname || undefined);
       router.replace(redirectUrl);
     }
   }, [isAuthenticated, isLoading, pathname, router]);

@@ -7,6 +7,7 @@ import { CreateProjectModal } from '@/features/dashboard/components/CreateProjec
 import { useProjects } from '@/shared/context/ProjectContext';
 import { WeddingProject } from '@/features/dashboard/types';
 import { AuthGuard } from '@/shared/components/AuthGuard';
+import { ROUTES } from '@/constants/routes';
 
 export default function ProjectsPage() {
   const router = useRouter();
@@ -14,13 +15,13 @@ export default function ProjectsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleSelectProject = (projectId: string) => {
-    router.push(`/dashboard/${projectId}`);
+    router.push(ROUTES.DASHBOARD_DETAIL(projectId));
   };
 
   const handleCreateProject = async (newProject: WeddingProject) => {
     await createProject(newProject);
     setIsModalOpen(false);
-    router.push(`/dashboard/${newProject.id}`);
+    router.push(ROUTES.DASHBOARD_DETAIL(newProject.id));
   };
 
   return (

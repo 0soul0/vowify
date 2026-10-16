@@ -9,17 +9,17 @@ import {
   Lock,
   ArrowRight,
   ArrowLeft,
-  CheckCircle2,
   AlertCircle,
   KeyRound
 } from 'lucide-react';
 import { useAuth, DEMO_ACCOUNT } from '@/shared/context/AuthContext';
 import { useI18n, LanguageSwitcher } from '@/shared/i18n/I18nContext';
+import { ROUTES } from '@/constants/routes';
 
 function LoginFormContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectPath = searchParams.get('redirect') || '/projects';
+  const redirectPath = searchParams.get('redirect') || ROUTES.PROJECTS;
 
   const { login, isAuthenticated } = useAuth();
   const { t } = useI18n();
@@ -61,7 +61,7 @@ function LoginFormContent() {
       {/* Top Navbar */}
       <header className="px-6 py-5 max-w-7xl w-full mx-auto flex items-center justify-between">
         <Link
-          href="/"
+          href={ROUTES.HOME}
           className="inline-flex items-center gap-2 text-xs font-medium text-[#6A665E] hover:text-[#2D3B36] transition-colors group"
         >
           <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-0.5" />
@@ -75,7 +75,7 @@ function LoginFormContent() {
         <div className="bg-white border border-[#E8E5DF] rounded-3xl p-8 sm:p-10 shadow-[0_12px_35px_rgba(45,59,54,0.05)] space-y-7">
           {/* Brand & Heading */}
           <div className="text-center space-y-3">
-            <Link href="/" className="inline-flex items-center gap-2 justify-center group mb-1">
+            <Link href={ROUTES.HOME} className="inline-flex items-center gap-2 justify-center group mb-1">
               <div className="w-10 h-10 rounded-xl bg-[#2D3B36] flex items-center justify-center text-[#FAF9F5] shadow-xs group-hover:scale-105 transition-transform">
                 <Sparkles className="w-5 h-5 text-[#C5A880]" />
               </div>
@@ -127,7 +127,7 @@ function LoginFormContent() {
                   {t('passwordLabel')}
                 </label>
                 <Link
-                  href="/forgot-password"
+                  href={ROUTES.FORGOT_PASSWORD}
                   className="text-[11px] text-[#C5A880] hover:text-[#9e835e] font-medium transition-colors"
                 >
                   {t('forgotPasswordLink')}
@@ -173,7 +173,7 @@ function LoginFormContent() {
           <div className="text-center pt-2 text-xs text-[#8E8A83]">
             <span>{t('dontHaveAccount')} </span>
             <Link
-              href={`/register${redirectPath !== '/projects' ? `?redirect=${encodeURIComponent(redirectPath)}` : ''}`}
+              href={ROUTES.buildRegisterUrl(redirectPath !== ROUTES.PROJECTS ? redirectPath : undefined)}
               className="font-semibold text-[#2D3B36] hover:text-[#C5A880] underline underline-offset-4 transition-colors"
             >
               {t('createAccountNow')}

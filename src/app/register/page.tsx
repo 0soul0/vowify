@@ -16,13 +16,14 @@ import {
 import { useAuth } from '@/shared/context/AuthContext';
 import { useI18n, LanguageSwitcher } from '@/shared/i18n/I18nContext';
 import { supabase } from '@/lib/supabase';
+import { ROUTES } from '@/constants/routes';
 
 type Step = 'email' | 'sent';
 
 function RegisterFormContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectPath = searchParams.get('redirect') || '/projects';
+  const redirectPath = searchParams.get('redirect') || ROUTES.PROJECTS;
 
   const { isAuthenticated } = useAuth();
   const { t } = useI18n();
@@ -54,7 +55,7 @@ function RegisterFormContent() {
       email: targetEmail,
       options: {
         shouldCreateUser: true,
-        emailRedirectTo: `${window.location.origin}/auth/callback?next=/register/complete`,
+        emailRedirectTo: `${window.location.origin}${ROUTES.buildAuthCallbackUrl(ROUTES.REGISTER_COMPLETE)}`,
       },
     });
 
@@ -87,7 +88,7 @@ function RegisterFormContent() {
     <div className="min-h-screen bg-[#F9F8F6] text-[#2D3B36] flex flex-col justify-between selection:bg-[#C5A880]/30">
       <header className="px-6 py-5 max-w-7xl w-full mx-auto flex items-center justify-between">
         <Link
-          href="/"
+          href={ROUTES.HOME}
           className="inline-flex items-center gap-2 text-xs font-medium text-[#6A665E] hover:text-[#2D3B36] transition-colors group"
         >
           <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-0.5" />
@@ -100,7 +101,7 @@ function RegisterFormContent() {
         <div className="bg-white border border-[#E8E5DF] rounded-3xl p-8 sm:p-10 shadow-[0_12px_35px_rgba(45,59,54,0.05)] space-y-7">
           {/* Brand */}
           <div className="text-center">
-            <Link href="/" className="inline-flex items-center gap-2 justify-center group mb-4">
+            <Link href={ROUTES.HOME} className="inline-flex items-center gap-2 justify-center group mb-4">
               <div className="w-10 h-10 rounded-xl bg-[#2D3B36] flex items-center justify-center text-[#FAF9F5] shadow-xs group-hover:scale-105 transition-transform">
                 <Sparkles className="w-5 h-5 text-[#C5A880]" />
               </div>
@@ -131,7 +132,7 @@ function RegisterFormContent() {
           <div className="text-center pt-2 text-xs text-[#8E8A83]">
             <span>{t('alreadyHaveAccount')} </span>
             <Link
-              href={`/login${redirectPath !== '/projects' ? `?redirect=${encodeURIComponent(redirectPath)}` : ''}`}
+              href={ROUTES.buildLoginUrl(redirectPath !== ROUTES.PROJECTS ? redirectPath : undefined)}
               className="font-semibold text-[#2D3B36] hover:text-[#C5A880] underline underline-offset-4 transition-colors"
             >
               {t('loginNow')}

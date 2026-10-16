@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { Sparkles, Mail, MessageCircle, ArrowUpRight } from 'lucide-react';
 import { useI18n, LanguageSwitcher } from '@/shared/i18n/I18nContext';
+import { ROUTES } from '@/constants/routes';
 
 export function Footer() {
   const { locale, t } = useI18n();
@@ -155,7 +156,7 @@ export function Footer() {
                 <li><a href="#features" className="hover:text-white transition-colors">{text.f1}</a></li>
                 <li><a href="#features" className="hover:text-white transition-colors">{text.f2}</a></li>
                 <li><a href="#features" className="hover:text-white transition-colors">{text.f3}</a></li>
-                <li><Link href="/projects" className="hover:text-white transition-colors">{text.f4}</Link></li>
+                <li><Link href={ROUTES.PROJECTS} className="hover:text-white transition-colors">{text.f4}</Link></li>
               </ul>
             </div>
 
@@ -176,7 +177,7 @@ export function Footer() {
                 {text.quick}
               </h4>
               <ul className="space-y-2 text-white/60">
-                <li><Link href="/projects" className="hover:text-[#C5A880] transition-colors flex items-center gap-1">{text.q1} <ArrowUpRight className="w-3 h-3" /></Link></li>
+                <li><Link href={ROUTES.PROJECTS} className="hover:text-[#C5A880] transition-colors flex items-center gap-1">{text.q1} <ArrowUpRight className="w-3 h-3" /></Link></li>
                 <li><a href="#pricing" className="hover:text-white transition-colors">{text.q2}</a></li>
                 <li><a href="#faq" className="hover:text-white transition-colors">{text.q3}</a></li>
                 <li><a href="mailto:support@vowify.io" className="hover:text-white transition-colors">{text.q4}</a></li>

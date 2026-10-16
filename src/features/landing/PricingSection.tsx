@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { Check, Sparkles, ArrowRight } from 'lucide-react';
 import { useI18n } from '@/shared/i18n/I18nContext';
+import { ROUTES } from '@/constants/routes';
 
 export function PricingSection() {
   const { locale, t } = useI18n();
@@ -18,7 +19,7 @@ export function PricingSection() {
         description: '適合想要先動手排版、預覽電子喜帖效果的新人。',
         highlight: false,
         ctaText: '立即免費製作',
-        ctaLink: '/projects',
+        ctaLink: ROUTES.PROJECTS,
         features: [
           '全套精美模版自由切換',
           '所見即所得視覺化編輯器',
@@ -42,7 +43,7 @@ export function PricingSection() {
         description: '完整解鎖所有高階功能，從喜帖發送到婚禮當日座位排表一站搞定。',
         highlight: true,
         ctaText: '立即解鎖尊榮版',
-        ctaLink: '/projects',
+        ctaLink: ROUTES.PROJECTS,
         features: [
           '包含免費體驗版所有功能',
           '無限制親友 RSVP 回覆量 (支援破千席)',
@@ -67,7 +68,7 @@ export function PricingSection() {
         description: '适合想要先动手排版、预览电子请帖效果的新人。',
         highlight: false,
         ctaText: '立即免费制作',
-        ctaLink: '/projects',
+        ctaLink: ROUTES.PROJECTS,
         features: [
           '全套精美模版自由切换',
           '所见即所得可视化编辑器',
@@ -91,7 +92,7 @@ export function PricingSection() {
         description: '完整解锁所有高阶功能，从请帖发送到婚礼当日座位排表一站搞定。',
         highlight: true,
         ctaText: '立即解锁尊荣版',
-        ctaLink: '/projects',
+        ctaLink: ROUTES.PROJECTS,
         features: [
           '包含免费体验版所有功能',
           '无限制亲友 RSVP 回复量 (支持破千席)',
@@ -116,7 +117,7 @@ export function PricingSection() {
         description: 'Perfect for couples wanting to design layouts and preview their online invitations.',
         highlight: false,
         ctaText: 'Start for Free',
-        ctaLink: '/projects',
+        ctaLink: ROUTES.PROJECTS,
         features: [
           'All designer templates included',
           'Full visual WYSIWYG editor',
@@ -140,7 +141,7 @@ export function PricingSection() {
         description: 'Unlock everything from invitation distribution to guest RSVP tracking and table seating.',
         highlight: true,
         ctaText: 'Unlock Full Access',
-        ctaLink: '/projects',
+        ctaLink: ROUTES.PROJECTS,
         features: [
           'Everything in Free Starter',
           'Unlimited RSVP submissions & guests',
@@ -165,7 +166,7 @@ export function PricingSection() {
         description: 'まずは自由にデザインを作成し、実際のプレビューを確認したい新郎新婦様に。',
         highlight: false,
         ctaText: '無料で作成する',
-        ctaLink: '/projects',
+        ctaLink: ROUTES.PROJECTS,
         features: [
           'すべてのデザインテンプレート利用可能',
           '直感的なビジュアルエディタ',
@@ -189,7 +190,7 @@ export function PricingSection() {
         description: '招待状の送信から当日の配席・食事希望集計まで、すべての機能を完全開放。',
         highlight: true,
         ctaText: 'プレミアム版を利用する',
-        ctaLink: '/projects',
+        ctaLink: ROUTES.PROJECTS,
         features: [
           'フリープランの全機能を含む',
           '出欠回答の受付が無制限 (何名様でも対応)',
