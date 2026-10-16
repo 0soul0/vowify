@@ -18,7 +18,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>;
-  register: (name: string, email: string, password: string) => Promise<{ success: boolean; error?: string }>;
+  setSessionUser: (user: User) => void;
   forgotPassword: (email: string) => Promise<{ success: boolean; error?: string }>;
   logout: () => Promise<void>;
   demoAccount: { email: string; password: string; name: string };
@@ -35,7 +35,7 @@ const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
   isLoading: true,
   login: async () => ({ success: true }),
-  register: async () => ({ success: false }),
+  setSessionUser: () => {},
   forgotPassword: async () => ({ success: false }),
   logout: async () => { },
   demoAccount: DEMO_ACCOUNT,
@@ -111,20 +111,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     initAuth();
 
     // 監聽 auth 狀態變更
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (session) {
         const u = sessionToUser(session);
         setUser(u);
         setAuthCookie();
         localStorage.setItem(STORAGE_AUTH_USER, JSON.stringify(u));
+      } else if (event === 'SIGNED_OUT') {
+        setUser(null);
+        clearAuthCookie();
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem(STORAGE_AUTH_USER);
+        }
       } else {
-        // 如果沒有 session 且不是 demo 帳號，則登出
+        // 沒有 Supabase Auth Session 的情況下，檢查是否有系統使用者（自訂用戶表或 Demo）
         const saved = typeof window !== 'undefined' ? localStorage.getItem(STORAGE_AUTH_USER) : null;
         if (saved) {
           try {
             const parsed = JSON.parse(saved);
-            if (parsed?.id === 'demo-user-id') {
-              return; // 保留 demo 使用者登入狀態
+            if (parsed && parsed.email) {
+              // 保留已登入使用者狀態
+              setUser(parsed);
+              setAuthCookie();
+              return;
             }
           } catch {
             // ignore
@@ -141,6 +150,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
+  const setSessionUser = (userData: User) => {
+    setUser(userData);
+    localStorage.setItem(STORAGE_AUTH_USER, JSON.stringify(userData));
+    setAuthCookie();
+  };
+
   const login = async (email: string, password: string): Promise<{ success: boolean; error?: string }> => {
     if (!email || !password) {
       return { success: false, error: '請填寫完整資訊' };
@@ -155,13 +170,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         name: DEMO_ACCOUNT.name,
         email: DEMO_ACCOUNT.email,
       };
-      setUser(demoUser);
-      localStorage.setItem(STORAGE_AUTH_USER, JSON.stringify(demoUser));
-      setAuthCookie();
+      setSessionUser(demoUser);
       return { success: true };
     }
 
-    // 2. 呼叫 Supabase 進行密碼登入
+    // 2. 先驗證自訂資料庫用戶 (02_vowify_users)
+    try {
+      const { loginUserWithCustomTable } = await import('@/actions/auth');
+      const customRes = await loginUserWithCustomTable(cleanEmail, password);
+      if (customRes.success && customRes.user) {
+        setSessionUser(customRes.user);
+        return { success: true };
+      }
+    } catch (e) {
+      console.warn('Custom login check failed, falling back:', e);
+    }
+
+    // 3. 呼叫 Supabase 進行密碼登入
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email: cleanEmail,
@@ -170,9 +195,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       if (!error && data.session) {
         const loggedUser = sessionToUser(data.session);
-        setUser(loggedUser);
-        localStorage.setItem(STORAGE_AUTH_USER, JSON.stringify(loggedUser));
-        setAuthCookie();
+        setSessionUser(loggedUser);
         return { success: true };
       }
 
@@ -198,34 +221,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     return { success: true };
-  };
-
-  const register = async (name: string, email: string, password: string): Promise<{ success: boolean; error?: string }> => {
-    if (!name.trim() || !email.trim() || !password) {
-      return { success: false, error: '請填寫完整資訊' };
-    }
-
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email: email.trim(),
-        password,
-        options: {
-          data: { name: name.trim() },
-        },
-      });
-
-      if (error) return { success: false, error: error.message };
-
-      if (data.session) {
-        const u = sessionToUser(data.session);
-        setUser(u);
-        localStorage.setItem(STORAGE_AUTH_USER, JSON.stringify(u));
-        setAuthCookie();
-      }
-      return { success: true };
-    } catch (err) {
-      return { success: false, error: (err as Error).message };
-    }
   };
 
   const forgotPassword = async (email: string): Promise<{ success: boolean; error?: string }> => {
@@ -261,7 +256,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         isAuthenticated: !!user,
         isLoading,
         login,
-        register,
+        setSessionUser,
         forgotPassword,
         logout,
         demoAccount: DEMO_ACCOUNT,
